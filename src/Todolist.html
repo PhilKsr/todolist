@@ -8,17 +8,16 @@
   <body>
     <!--    Missing some HTML elements here... -->
     <button id="toggle__all__button">Toggle all</button>
-    <button id="add__button">Add</button>
     <input id="add__input" placeholder="Add new todo..." />
 
     <ul id="todo__list"></ul>
 
     <script>
-      let todos = [
-        { todoText: "Item 1", completed: false },
-        { todoText: "Item 2", completed: false },
-        { todoText: "Item 3", completed: false },
+      const getLocalStorage = JSON.parse(localStorage.getItem("_TODOS"));
+      const todos = getLocalStorage ?? [
+        { todoText: "Your first Todo!", completed: true },
       ];
+      displayTodos();
 
       // ADD A TODO
       function add(initialTodoText) {
@@ -31,12 +30,7 @@
       function edit(event, todoBackup) {
         const todoText = document.getElementById(event.target.id);
         todoText.innerHTML = `
-          <input type='text' class='newInput' placeholder='Edit...'>
-          <button class='cancel'>Cancel</button>`;
-        const cancelButton = document.querySelector(".cancel");
-        cancelButton.addEventListener("click", () => {
-          todoText.innerHTML = todoBackup;
-        });
+                <input type='text' class='newInput' placeholder='Edit...'>`;
 
         const editInput = document.querySelector(".newInput");
         editInput.addEventListener("keydown", (event) => {
@@ -53,17 +47,18 @@
         displayTodos();
       }
 
-      // TOGGLE ONE TODO
-      function toggle() {
-        let position = toggleInput.value;
-        if (todos[position].completed === false) {
-          todos[position].completed = true;
-        } else {
-          todos[position].completed = false;
-        }
-        toggleInput.value = "";
-        displayTodos();
-      }
+      // TOGGLE ONE TODO ------ IS NOT WORKING!!!!
+      /*       function toggleTodo() {
+        const checkboxes = document.querySelectorAll("checkbox");
+        checkboxes.forEach(() => {
+          if (checkbox.checked) {
+            todos[index].completed = true;
+          } else {
+            todos[index].completed = false;
+          }
+        });
+        saveToLocalStorage();
+      } */
 
       // TOGGLE ALL TODOS
       function toggleAll() {
@@ -86,11 +81,13 @@
         }
         displayTodos();
       }
-      console.log(todos);
+      console.log(todos.length);
+
       // DISPLAY ALL TODOS
       function displayTodos() {
         let todoList = document.querySelector("#todo__list");
         todoList.innerHTML = "";
+
         todos.forEach((todo, index) => {
           let listItem = document.createElement("li");
           todoList.appendChild(listItem);
@@ -108,9 +105,8 @@
           removeButton.addEventListener("click", remove);
 
           const allTodos = document.querySelectorAll("p");
-          allTodos.forEach((todo) => {
-            const todoBackup = todo.value;
-            todo.addEventListener("dblclick", edit(event, todoBackup));
+          allTodos.forEach((todo, event) => {
+            todo.addEventListener("dblclick", edit);
           });
 
           const editButton = document.createElement("button");
@@ -126,12 +122,8 @@
           } else {
             checkbox.checked = false;
           }
-          if (checkbox.checked) {
-            todos[index].completed = true;
-          } else {
-            todos[index].completed = false;
-          }
         });
+        saveToLocalStorage();
       }
 
       // TOGGLE A TODO (BUTTON/ (CLICKON))
@@ -141,14 +133,16 @@
       // ADD A TODO (BUTTON/ ENTER)
       let addButton = document.querySelector("#add__button");
       let addInput = document.querySelector("#add__input");
-      addButton.addEventListener("click", add(addInput.value));
       addInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
           add(addInput.value);
         }
       });
 
-      // EDIT TODOS (BUTTON/ (ENTER)/ (CLICKON))
+      // ADD LOCAL STORAGE
+      function saveToLocalStorage() {
+        localStorage.setItem("_TODOS", JSON.stringify(todos));
+      }
     </script>
   </body>
 </html>
