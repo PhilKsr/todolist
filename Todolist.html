@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Practical JavaScript</title>
+  </head>
+
+  <body>
+    <!--    Missing some HTML elements here... -->
+    <button id="toggle__all__button">Toggle all</button>
+    <button id="add__button">Add</button>
+    <input id="add__input" />
+    <button id="edit__button">Edit</button>
+    <input id="edit__position--input" placeholder="Todo number..." />
+    <input id="edit__text--input" placeholder="Todo name..." />
+
+    <ul id="todo__list"></ul>
+
+    <script>
+      let todos = [
+        { todoText: "Item 1", completed: false },
+        { todoText: "Item 2", completed: false },
+        { todoText: "Item 3", completed: false },
+      ];
+
+      // ADD A TODO
+      function add(initialTodoText) {
+        todos.push({ todoText: initialTodoText, completed: false });
+        addInput.value = "";
+        displayTodos();
+      }
+
+      // EDIT ONE TODO
+      function edit() {
+        let position = editPositionInput.value;
+        let newTodoText = editTextInput.value;
+        todos[position].todoText = newTodoText;
+        editPositionInput.value = "";
+        editTextInput.value = "";
+        displayTodos();
+      }
+
+      // REMOVE ONE TODO
+      function remove(event) {
+        let position = event.target.id;
+        todos.splice(position, 1);
+        displayTodos();
+      }
+
+      // TOGGLE ONE TODO
+      function toggle() {
+        let position = toggleInput.value;
+        if (todos[position].completed === false) {
+          todos[position].completed = true;
+        } else {
+          todos[position].completed = false;
+        }
+        toggleInput.value = "";
+        displayTodos();
+      }
+
+      // TOGGLE ALL TODOS
+      function toggleAll() {
+        let completedTodos = 0;
+
+        for (let i = 0; i < todos.length; i++) {
+          if (todos[i].completed === true) {
+            completedTodos++;
+          }
+        }
+
+        if (completedTodos === todos.length) {
+          for (let i = 0; i < todos.length; i++) {
+            todos[i].completed = false;
+          }
+        } else {
+          for (let i = 0; i < todos.length; i++) {
+            todos[i].completed = true;
+          }
+        }
+        displayTodos();
+      }
+      console.log(todos);
+      // DISPLAY ALL TODOS
+      function displayTodos() {
+        let todoList = document.querySelector("#todo__list");
+        todoList.innerHTML = "";
+        todos.forEach((todo, index) => {
+          let listItem = document.createElement("li");
+          todoList.appendChild(listItem);
+          listItem.innerHTML =
+            `<input type="checkbox" class="completed"> ` + todo.todoText;
+          removeButton = document.createElement("button");
+          removeButton.innerText = "Remove";
+          listItem.append(removeButton);
+          removeButton.id = index;
+          removeButton.addEventListener("click", remove);
+        });
+        let checkboxes = document.querySelectorAll(".completed");
+        checkboxes.forEach((checkbox, index) => {
+          if (todos[index].completed === true) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+          if (checkbox.checked) {
+            todos[index].completed = true;
+          } else {
+            todos[index].completed = false;
+          }
+        });
+      }
+
+      // TOGGLE A TODO (BUTTON/ (CLICKON))
+      let toggleAllButton = document.querySelector("#toggle__all__button");
+      toggleAllButton.addEventListener("click", toggleAll);
+
+      // ADD A TODO (BUTTON/ ENTER)
+      let addButton = document.querySelector("#add__button");
+      let addInput = document.querySelector("#add__input");
+      addButton.addEventListener("click", add(addInput.value));
+      addInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          add(addInput.value);
+        }
+      });
+
+      // EDIT TODOS (BUTTON/ (ENTER)/ (CLICKON))
+      let editButton = document.querySelector("#edit__button");
+      let editPositionInput = document.querySelector("#edit__position--input");
+      let editTextInput = document.querySelector("#edit__text--input");
+      editButton.addEventListener("click", edit);
+    </script>
+  </body>
+</html>
