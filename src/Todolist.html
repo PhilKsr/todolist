@@ -9,10 +9,7 @@
     <!--    Missing some HTML elements here... -->
     <button id="toggle__all__button">Toggle all</button>
     <button id="add__button">Add</button>
-    <input id="add__input" />
-    <button id="edit__button">Edit</button>
-    <input id="edit__position--input" placeholder="Todo number..." />
-    <input id="edit__text--input" placeholder="Todo name..." />
+    <input id="add__input" placeholder="Add new todo..." />
 
     <ul id="todo__list"></ul>
 
@@ -31,13 +28,22 @@
       }
 
       // EDIT ONE TODO
-      function edit() {
-        let position = editPositionInput.value;
-        let newTodoText = editTextInput.value;
-        todos[position].todoText = newTodoText;
-        editPositionInput.value = "";
-        editTextInput.value = "";
-        displayTodos();
+      function edit(event, todoBackup) {
+        const todoText = document.getElementById(event.target.id);
+        todoText.innerHTML = `
+          <input type='text' class='newInput' placeholder='Edit...'>
+          <button class='cancel'>Cancel</button>`;
+        const cancelButton = document.querySelector(".cancel");
+        cancelButton.addEventListener("click", () => {
+          todoText.innerHTML = todoBackup;
+        });
+
+        const editInput = document.querySelector(".newInput");
+        editInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            todoText.innerHTML = editInput.value;
+          }
+        });
       }
 
       // REMOVE ONE TODO
@@ -88,13 +94,30 @@
         todos.forEach((todo, index) => {
           let listItem = document.createElement("li");
           todoList.appendChild(listItem);
-          listItem.innerHTML =
-            `<input type="checkbox" class="completed"> ` + todo.todoText;
-          removeButton = document.createElement("button");
+          listItem.innerHTML = `<input type="checkbox" class="completed"> `;
+
+          let todoText = document.createElement("p");
+          todoText.id = index;
+          todoText.innerText = todo.todoText;
+          listItem.appendChild(todoText);
+
+          const removeButton = document.createElement("button");
           removeButton.innerText = "Remove";
           listItem.append(removeButton);
           removeButton.id = index;
           removeButton.addEventListener("click", remove);
+
+          const allTodos = document.querySelectorAll("p");
+          allTodos.forEach((todo) => {
+            const todoBackup = todo.value;
+            todo.addEventListener("dblclick", edit(event, todoBackup));
+          });
+
+          const editButton = document.createElement("button");
+          editButton.innerText = "Edit";
+          listItem.append(editButton);
+          editButton.id = index;
+          editButton.addEventListener("click", edit);
         });
         let checkboxes = document.querySelectorAll(".completed");
         checkboxes.forEach((checkbox, index) => {
@@ -126,10 +149,6 @@
       });
 
       // EDIT TODOS (BUTTON/ (ENTER)/ (CLICKON))
-      let editButton = document.querySelector("#edit__button");
-      let editPositionInput = document.querySelector("#edit__position--input");
-      let editTextInput = document.querySelector("#edit__text--input");
-      editButton.addEventListener("click", edit);
     </script>
   </body>
 </html>
