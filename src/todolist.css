@@ -1,0 +1,64 @@
+:root {
+  --primary: #bee1e6;
+  --secondary: #f0efeb;
+  --third-c: #fff1e6;
+  --wrong-c: #fad2e1;
+  --correct-c: #bae5c8;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  font-size: 1.25rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+}
+
+label {
+  font-size: 1rem;
+}
+
+.content__wrapper {
+  border: 1px grey solid;
+  margin: 1rem;
+}
+.menu__wrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px grey solid;
+  margin-bottom: 0.2rem;
+}
+
+li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+li p {
+  font-size: 1rem;
+}
+
+li button {
+  margin: 0.3rem;
+  width: 3rem;
+  height: 1.5rem;
+}

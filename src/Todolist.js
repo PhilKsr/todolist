@@ -1,4 +1,4 @@
-const todos = getLocalStorage && [
+const todos = getLocalStorage() ?? [
   { todoText: "This could be your done todo!", completed: true },
 ];
 displayTodos();
@@ -7,14 +7,13 @@ displayTodos();
 const toggleAllButton = document.querySelector("#toggle__all__button");
 toggleAllButton.addEventListener("click", toggleAll);
 function toggle(event) {
-  const checkbox = document.getElementById(event.target.id);
-
+  const checkboxes = document.querySelectorAll(".completed");
+  const checkbox = checkboxes[event.target.id];
   if (checkbox.checked) {
     todos[event.target.id].completed = true;
   } else {
     todos[event.target.id].completed = false;
   }
-
   saveToLocalStorage();
 }
 
@@ -47,15 +46,10 @@ function displayTodos() {
     listItem.appendChild(todoText);
 
     const removeButton = document.createElement("button");
-    removeButton.innerText = "Remove";
+    removeButton.innerText = "❌";
     listItem.append(removeButton);
     removeButton.id = index;
     removeButton.addEventListener("click", remove);
-
-    /*     const allTodos = document.querySelectorAll("p");
-    allTodos.forEach((todo) => {
-      todo.addEventListener("dblclick", edit);
-    }); */
 
     const editButton = document.createElement("button");
     editButton.innerText = "Edit";
@@ -74,7 +68,7 @@ function displayTodos() {
     }
     checkbox.addEventListener("change", toggle);
   });
-  saveToLocalStorage(todos);
+  saveToLocalStorage();
 }
 
 // TOGGLE ALL TODOS
@@ -122,11 +116,11 @@ function remove(event) {
 }
 
 // ADD LOCAL STORAGE
-function saveToLocalStorage(todoList) {
-  localStorage.setItem("_TODOS", JSON.stringify(todoList));
+function saveToLocalStorage() {
+  localStorage.setItem("_TODOS", JSON.stringify(todos));
 }
 
 // GET LOCAL STORAGE
 function getLocalStorage() {
-  JSON.parse(localStorage.getItem("_TODOS"));
+  return JSON.parse(localStorage.getItem("_TODOS"));
 }

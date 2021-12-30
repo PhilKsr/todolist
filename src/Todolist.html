@@ -5,13 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo-list</title>
-    <script src="./Todolist.js" defer type="module"></script>
+    <link rel="stylesheet" href="./todolist.css" />
+    <script src="./todolist.js" defer type="module"></script>
   </head>
   <body>
     <h1>Another todo-list</h1>
-    <button id="toggle__all__button">Toggle all</button>
-    <label for="newTodo">Add new todo with Enter</label>
-    <input name="newTodo" id="add__input" placeholder="Add new todo..." />
-    <ul id="todo__list"></ul>
+    <div class="content__wrapper">
+      <div class="menu__wrapper">
+        <input
+          name="newTodo"
+          id="add__input"
+          placeholder="Add new todo with Enter..."
+        />
+      </div>
+      <button id="toggle__all__button">Toggle all</button>
+
+      <ul id="todo__list"></ul>
+    </div>
   </body>
 </html>
