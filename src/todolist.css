@@ -37,12 +37,15 @@ label {
 
 .content__wrapper {
   border: 1px grey solid;
+  border-radius: 10px;
   margin: 1rem;
 }
-.menu__wrapper {
+#add__input {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  height: 1.5rem;
   border: 1px grey solid;
+  border-radius: 10px;
   margin-bottom: 0.2rem;
 }
 
@@ -55,10 +58,20 @@ li {
 
 li p {
   font-size: 1rem;
+  background: rgb(243, 190, 188);
+  border-radius: 10px;
+  padding: 6px;
 }
 
 li button {
   margin: 0.3rem;
   width: 3rem;
   height: 1.5rem;
+  cursor: pointer;
+}
+
+.done {
+  background-color: lightgrey;
+  opacity: 70%;
+  text-decoration: line-through;
 }

@@ -8,11 +8,15 @@ const toggleAllButton = document.querySelector("#toggle__all__button");
 toggleAllButton.addEventListener("click", toggleAll);
 function toggle(event) {
   const checkboxes = document.querySelectorAll(".completed");
+  const paragraphs = document.querySelectorAll("p");
   const checkbox = checkboxes[event.target.id];
+  const paragraph = paragraphs[event.target.id];
   if (checkbox.checked) {
     todos[event.target.id].completed = true;
+    paragraph.classList.add("done");
   } else {
     todos[event.target.id].completed = false;
+    paragraph.classList.remove("done");
   }
   saveToLocalStorage();
 }
@@ -60,11 +64,16 @@ function displayTodos() {
 
   const checkboxes = document.querySelectorAll(".completed");
   checkboxes.forEach((checkbox, index) => {
+    const paragraphs = document.querySelectorAll("p");
+    const paragraph = paragraphs[index];
+
     checkbox.id = index;
     if (todos[index].completed === true) {
       checkbox.checked = true;
+      paragraph.classList.add("done");
     } else {
       checkbox.checked = false;
+      paragraph.classList.remove("done");
     }
     checkbox.addEventListener("change", toggle);
   });
