@@ -1,150 +1,17 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
   <head>
-    <title>Practical JavaScript</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo-list</title>
+    <script src="./Todolist.js" defer type="module"></script>
   </head>
-
   <body>
-    <!--    Missing some HTML elements here... -->
+    <h1>Another todo-list</h1>
     <button id="toggle__all__button">Toggle all</button>
-    <input id="add__input" placeholder="Add new todo..." />
-
+    <label for="newTodo">Add new todo with Enter</label>
+    <input name="newTodo" id="add__input" placeholder="Add new todo..." />
     <ul id="todo__list"></ul>
-
-    <script>
-      const getLocalStorage = JSON.parse(localStorage.getItem("_TODOS"));
-      const todos = getLocalStorage ?? [
-        { todoText: "Your first Todo!", completed: true },
-      ];
-      displayTodos();
-
-      // ADD A TODO
-      function add(initialTodoText) {
-        todos.push({ todoText: initialTodoText, completed: false });
-        addInput.value = "";
-        displayTodos();
-      }
-
-      // EDIT ONE TODO
-      function edit(event) {
-        const todoText = document.getElementById(event.target.id);
-        todoText.innerHTML = `
-                <input type='text' class='newInput' placeholder='Edit...'>`;
-
-        const editInput = document.querySelector(".newInput");
-        editInput.addEventListener("keydown", (event) => {
-          if (event.key === "Enter") {
-            todoText.innerHTML = editInput.value;
-          }
-        });
-      }
-
-      // REMOVE ONE TODO
-      function remove(event) {
-        let position = event.target.id;
-        todos.splice(position, 1);
-        displayTodos();
-      }
-
-      // TOGGLE ONE TODO ------ IS NOT WORKING!!!!
-      function toggle(event) {
-        const checkbox = document.getElementById(event.target.id);
-
-        if (checkbox.checked) {
-          todos[event.target.id].completed = true;
-        } else {
-          todos[event.target.id].completed = false;
-        }
-
-        saveToLocalStorage();
-      }
-
-      // TOGGLE ALL TODOS
-      function toggleAll() {
-        let completedTodos = 0;
-
-        for (let i = 0; i < todos.length; i++) {
-          if (todos[i].completed === true) {
-            completedTodos++;
-          }
-        }
-
-        if (completedTodos === todos.length) {
-          for (let i = 0; i < todos.length; i++) {
-            todos[i].completed = false;
-          }
-        } else {
-          for (let i = 0; i < todos.length; i++) {
-            todos[i].completed = true;
-          }
-        }
-        displayTodos();
-      }
-      console.log(todos.length);
-
-      // DISPLAY ALL TODOS
-      function displayTodos() {
-        let todoList = document.querySelector("#todo__list");
-        todoList.innerHTML = "";
-
-        todos.forEach((todo, index) => {
-          let listItem = document.createElement("li");
-          todoList.appendChild(listItem);
-          listItem.innerHTML = `<input type="checkbox" class="completed"> `;
-
-          let todoText = document.createElement("p");
-          todoText.id = index;
-          todoText.innerText = todo.todoText;
-          listItem.appendChild(todoText);
-
-          const removeButton = document.createElement("button");
-          removeButton.innerText = "Remove";
-          listItem.append(removeButton);
-          removeButton.id = index;
-          removeButton.addEventListener("click", remove);
-
-          const allTodos = document.querySelectorAll("p");
-          allTodos.forEach((todo, event) => {
-            todo.addEventListener("dblclick", edit);
-          });
-
-          const editButton = document.createElement("button");
-          editButton.innerText = "Edit";
-          listItem.append(editButton);
-          editButton.id = index;
-          editButton.addEventListener("click", edit);
-        });
-        let checkboxes = document.querySelectorAll(".completed");
-        checkboxes.forEach((checkbox, index) => {
-          checkbox.id = index;
-          if (todos[index].completed === true) {
-            checkbox.checked = true;
-          } else {
-            checkbox.checked = false;
-          }
-          checkbox.addEventListener("change", toggle);
-        });
-        saveToLocalStorage();
-      }
-
-      // TOGGLE A TODO (BUTTON/ (CLICKON))
-      let toggleAllButton = document.querySelector("#toggle__all__button");
-      toggleAllButton.addEventListener("click", toggleAll);
-
-      // ADD A TODO (BUTTON/ ENTER)
-      let addButton = document.querySelector("#add__button");
-      let addInput = document.querySelector("#add__input");
-      addInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          add(addInput.value);
-        }
-      });
-
-      // ADD LOCAL STORAGE
-      function saveToLocalStorage() {
-        localStorage.setItem("_TODOS", JSON.stringify(todos));
-      }
-    </script>
   </body>
 </html>
